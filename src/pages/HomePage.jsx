@@ -86,10 +86,19 @@ export default function HomePage() {
         </div>
         <div className="grid grid-cols-2 gap-4 sm:grid-cols-4">
           {destacados.map((b) => (
-            <div key={b.id} className="overflow-hidden rounded-xl border border-line bg-surface">
-              <div className="aspect-[3/4] w-full bg-surface-2">
-                <img src={b.portada} alt={`Portada de ${b.titulo}`} className="book-cover h-full w-full object-cover" loading="lazy" />
-              </div>
+              <div key={b.id} className="overflow-hidden rounded-xl border border-line bg-surface">
+                <div className="aspect-[3/4] w-full bg-surface-2">
+                  <img
+                    src={b.portada}
+                    alt={`Portada de ${b.titulo}`}
+                    className="book-cover h-full w-full object-cover"
+                    loading="lazy"
+                    onError={(e) => {
+                      e.target.onerror = null;
+                      e.target.src = "https://placehold.co/300x450/1e1b2e/9e8bb5?text=Sin+portada&font=open-sans";
+                    }}
+                  />
+                </div>
               <div className="p-3">
                 <p className="truncate font-display text-sm font-medium text-parchment">{b.titulo}</p>
                 <p className="truncate text-xs text-muted">{b.autor}</p>
