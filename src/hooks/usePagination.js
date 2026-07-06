@@ -1,4 +1,4 @@
-import { useMemo, useState } from "react";
+import { useCallback, useMemo, useState } from "react";
 
 /**
  * Hook de paginación reutilizable.
@@ -18,9 +18,10 @@ export default function usePagination(items, pageSize = 8) {
     return { start: s, end: e, pageItems: items.slice(s, e) };
   }, [items, safePage, pageSize]);
 
-  // Resetear a la primera página si cambian los items
-  // (se puede controlar externamente si es necesario)
-  const goToPage = (p) => setPage(Math.max(1, Math.min(p, totalPages)));
+  const goToPage = useCallback(
+    (p) => setPage(Math.max(1, Math.min(p, totalPages))),
+    [totalPages]
+  );
 
   return {
     page: safePage,
