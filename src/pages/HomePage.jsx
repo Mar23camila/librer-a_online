@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { Link } from "react-router-dom";
 import { useAuth } from "../hooks/useAuth";
 import { seedBooks } from "../api/seedData";
@@ -25,6 +26,11 @@ function SpineWall() {
 export default function HomePage() {
   const { isAuthenticated, isAdmin } = useAuth();
   const destacados = seedBooks.slice(0, 4);
+  const [failedImgs, setFailedImgs] = useState(new Set());
+
+  function handleImgError(id) {
+    setFailedImgs((prev) => new Set(prev).add(id));
+  }
 
   return (
     <div>
@@ -88,16 +94,20 @@ export default function HomePage() {
           {destacados.map((b) => (
               <div key={b.id} className="overflow-hidden rounded-xl border border-line bg-surface">
                 <div className="aspect-[3/4] w-full bg-surface-2">
-                  <img
-                    src={b.portada}
-                    alt={`Portada de ${b.titulo}`}
-                    className="book-cover h-full w-full object-cover"
-                    loading="lazy"
-                    onError={(e) => {
-                      e.target.onerror = null;
-                      e.target.src = "https://placehold.co/300x450/1e1b2e/9e8bb5?text=Sin+portada&font=open-sans";
-                    }}
-                  />
+                  {!failedImgs.has(b.id) ? (
+                    <img
+                      src={b.portada}
+                      alt={`Portada de ${b.titulo}`}
+                      className="book-cover h-full w-full object-cover"
+                      loading="lazy"
+                      onError={() => handleImgError(b.id)}
+                    />
+                  ) : (
+                    <div className="book-cover flex h-full w-full flex-col items-center justify-center gap-2 bg-gradient-to-br from-violet-900 to-ink-2 p-4 text-center">
+                      <span className="text-3xl">📖</span>
+                      <span className="font-display text-sm text-lilac-200">{b.titulo}</span>
+                    </div>
+                  )}
                 </div>
               <div className="p-3">
                 <p className="truncate font-display text-sm font-medium text-parchment">{b.titulo}</p>

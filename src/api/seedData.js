@@ -20,7 +20,7 @@ export const seedBooks = [
     categoria: "Clásico",
     precio: 72000,
     stock: 9,
-    portada: "https://covers.openlibrary.org/b/isbn/9788420406503-L.jpg",
+    portada: "https://covers.openlibrary.org/b/id/12648624-L.jpg",
     descripcion:
       "Las aventuras del ingenioso hidalgo que decide convertirse en caballero andante, obra cumbre del español.",
   },
